@@ -1,0 +1,19 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./backend:/app # Sincroniza cambios en vivo
+      - /app/node_modules # No sobrescribir node_modules
+    environment:
+      # Lee las variables del .env en la raíz
+      - MONGO_URI=${MONGO_URI}
+      - JWT_SECRET=${JWT_SECRET}
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80" # Expone el puerto 80 (nginx) al puerto 3000 de tu PC
+    depends_on:
+      - backend # Espera a que el backend inicie
